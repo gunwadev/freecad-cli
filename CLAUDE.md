@@ -117,6 +117,22 @@ Build scripts should:
 - Save to `.FCStd` and export to `.stl` for printing
 - **Use `os.path.dirname(os.path.abspath(__file__))` for all file paths**
 
+### STL Export in Build Scripts
+
+Use `Mesh.export()` with the `Part::Feature` document object directly -- NOT manual tessellation:
+
+```python
+# CORRECT - pass the document object
+import Mesh
+obj = doc.addObject("Part::Feature", "MyPart")
+obj.Shape = my_shape
+Mesh.export([obj], os.path.join(script_dir, 'my_part.stl'))
+
+# WRONG - don't manually tessellate, this causes API errors
+mesh_obj = doc.addObject("Mesh::Feature", "MyMesh")
+mesh_obj.Mesh = Mesh.Mesh(my_shape.tessellate(0.1))  # fragile, may break
+```
+
 See `output/hydrojug-handle/build_clamp_handle.py` for a real example.
 
 ## 3D Print Export Workflow
