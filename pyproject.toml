@@ -1,0 +1,25 @@
+[project]
+name = "freecad-cli"
+version = "0.1.0"
+description = "Command-line interface for FreeCAD - headless CAD operations and 3D print export"
+readme = "freecad_cli/README.md"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = [
+    "click>=8.0,<9.0",
+]
+
+[project.scripts]
+freecad-cli = "freecad_cli.freecad_cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["freecad_cli/tests"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+]

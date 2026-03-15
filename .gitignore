@@ -1,0 +1,42 @@
+# FreeCAD source (large upstream repo, not part of this project)
+freecad/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+
+# FreeCAD backup files
+*.FCBak
+
+# pytest
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Environment / secrets
+.env
+.env.*
+venv/
+.venv/
+env/
+
+# uv
+.python-version
+
+# Claude Code
+.claude/
+
+# Design output (personal projects)
+output/
+# To include an example, use: git add -f output/example/
