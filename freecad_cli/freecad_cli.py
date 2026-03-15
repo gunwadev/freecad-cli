@@ -813,6 +813,75 @@ def bounds(filepath, object_name):
 
 
 # ============================================================
+# Printer Commands
+# ============================================================
+
+@cli.group()
+def printer():
+    """Manage 3D printer profiles."""
+    pass
+
+
+@printer.command()
+@click.argument("name")
+@click.option("--model", help="Full printer model name.")
+@click.option("--bed-x", type=float, help="Build volume X (mm).")
+@click.option("--bed-y", type=float, help="Build volume Y (mm).")
+@click.option("--bed-z", type=float, help="Build volume Z (mm).")
+@click.option("--nozzle", type=float, default=0.4, help="Nozzle diameter (mm).")
+@click.option("--materials", help="Comma-separated materials (e.g., PLA,PETG,TPU).")
+@click.option("--heated-bed/--no-heated-bed", default=True, help="Has heated bed.")
+@click.option("--notes", help="Extra notes about the printer.")
+def add(name, model, bed_x, bed_y, bed_z, nozzle, materials, heated_bed, notes):
+    """Add a printer profile."""
+    from freecad_cli.core.printer import add_printer
+    mat_list = [m.strip() for m in materials.split(",")] if materials else None
+    result = add_printer(name, model=model, bed_x=bed_x, bed_y=bed_y, bed_z=bed_z,
+                         nozzle=nozzle, materials=mat_list, heated_bed=heated_bed,
+                         notes=notes)
+    _output(result)
+
+
+@printer.command("list")
+def list_printers_cmd():
+    """List all printer profiles."""
+    from freecad_cli.core.printer import list_printers
+    _output(list_printers())
+
+
+@printer.command()
+@click.argument("name", required=False)
+def info(name):
+    """Show printer profile (default printer if no name given)."""
+    from freecad_cli.core.printer import get_printer
+    _output(get_printer(name))
+
+
+@printer.command()
+@click.argument("name")
+def remove(name):
+    """Remove a printer profile."""
+    from freecad_cli.core.printer import remove_printer
+    _output(remove_printer(name))
+
+
+@printer.command("set-default")
+@click.argument("name")
+def set_default_cmd(name):
+    """Set the default printer."""
+    from freecad_cli.core.printer import set_default
+    _output(set_default(name))
+
+
+@printer.command()
+@click.argument("name", required=False)
+def settings(name):
+    """Show recommended print settings for a printer."""
+    from freecad_cli.core.printer import get_print_settings
+    _output(get_print_settings(name))
+
+
+# ============================================================
 # REPL Mode
 # ============================================================
 

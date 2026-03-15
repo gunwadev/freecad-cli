@@ -34,6 +34,9 @@ env/
 # uv
 .python-version
 
+# Printer profiles (per-user, not shared)
+.printers/
+
 # Claude Code
 .claude/
 

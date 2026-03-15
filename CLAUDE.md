@@ -43,6 +43,7 @@ All state lives in `.FCStd` document files on disk. Each command is stateless.
 | `export` | `file`, `formats` | Export to STL, STEP, IGES, etc. |
 | `import` | `file` | Import CAD files into a document |
 | `measure` | `object`, `distance`, `bounds` | Measure geometry |
+| `printer` | `add`, `list`, `info`, `remove`, `set-default`, `settings` | Manage 3D printer profiles |
 | `repl` | *(interactive)* | Interactive session mode |
 
 ### JSON Mode
@@ -134,6 +135,35 @@ mesh_obj.Mesh = Mesh.Mesh(my_shape.tessellate(0.1))  # fragile, may break
 ```
 
 See `output/hydrojug-handle/build_clamp_handle.py` for a real example.
+
+## Printer Profiles
+
+**Before designing a part, check if the user has a printer profile set up.** If not, ask what printer they have and add it:
+
+```bash
+# Check if a printer is configured
+freecad-cli --json printer list
+
+# Add a printer (example: Bambu Lab A1 Mini)
+freecad-cli printer add bambu-a1-mini \
+  --model "Bambu Lab A1 Mini" \
+  --bed-x 180 --bed-y 180 --bed-z 180 \
+  --nozzle 0.4 \
+  --materials "PLA,PETG,TPU,ABS" \
+  --heated-bed \
+  --notes "Supports multicolor with AMS"
+
+# Get recommended settings for the default printer
+freecad-cli --json printer settings
+```
+
+**When giving print recommendations**, always check the printer profile first:
+- Don't recommend materials the printer doesn't support
+- Don't design parts larger than the build volume
+- Use appropriate layer heights for the nozzle size
+- Note any printer-specific quirks from the notes field
+
+Printer profiles are stored locally in `.printers/` (gitignored -- each user has their own).
 
 ## 3D Print Export Workflow
 
